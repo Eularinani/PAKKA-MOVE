@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Pakka Move</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="title_activity_google_maps">GoogleMapsActivity</string>
+
+    <string name="levantar_menu">LEVANTAR</string>
+    <string name="maquina_menu">MAQUINA</string>
+    <string name="banco_menu">BANCOS</string>
+    <string name="inicio_menu">INICIO</string>
+</resources>

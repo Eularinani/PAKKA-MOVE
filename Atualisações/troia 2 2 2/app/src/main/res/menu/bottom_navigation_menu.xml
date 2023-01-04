@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/banco_menu"
+        android:icon="@drawable/ic_inicio"
+        android:title="@string/banco_menu"
+        />
+    <item
+        android:id="@+id/maquina_menu"
+        android:icon="@drawable/ic_maquinas"
+        android:title="@string/maquina_menu"/>
+
+    <item
+        android:id="@+id/levantar_menu"
+        android:icon="@drawable/ic_maquinas"
+        android:title="@string/levantar_menu"/>
+
+    <item
+        android:id="@+id/inicio_menu"
+        android:icon="@drawable/ic_mapa"
+        android:title="MAPA"/>
+
+</menu>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ABABAB">
+
+
+    <TextView
+        android:id="@+id/marker_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Titulo"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        android:layout_centerHorizontal="true"
+        ></TextView>
+
+    <TextView
+        android:id="@+id/marker_subtitile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="subtitulo"
+        android:textColor="@color/black"
+        android:textSize="15dp"
+        android:layout_below="@+id/marker_title"
+        android:layout_centerHorizontal="true"
+        ></TextView>
+
+    <CheckBox
+        android:id="@+id/estado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/marker_subtitile"
+        android:clickable="true"
+        android:text="Ligada"></CheckBox>
+
+    <CheckBox
+        android:id="@+id/dinheiro"
+        android:paddingTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/estado"
+        android:clickable="true"
+        android:text="Dinheiro"></CheckBox>
+
+    <CheckBox
+        android:id="@+id/papel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dinheiro"
+        android:clickable="true"
+        android:text="Papel"></CheckBox>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/submit"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/papel"
+        android:background="@color/teal_200"
+        android:text="Submeter"></Button>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/distanciaRodape"
+        android:layout_centerHorizontal="true"
+        android:textSize="10dp"
+        android:layout_below="@+id/submit"
+        android:visibility="gone"
+        android:text="Está muito longe do ATM"></TextView>
+
+</RelativeLayout>
