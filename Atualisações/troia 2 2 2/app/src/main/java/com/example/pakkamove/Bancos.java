@@ -92,7 +92,10 @@ public class Bancos extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //TODO: Bundle para mandar o titulo do banco
+                //Bundle bundle = new Bundle();
+                //bundle.putInt("id", position);
                 Intent mapa  = new Intent(getApplicationContext(), MapsActivity.class);
+                mapa.putExtra("id", position);
                 startActivity(mapa);
                 overridePendingTransition(0,0);
                 Log.d("tag: ","cliquei na lista");

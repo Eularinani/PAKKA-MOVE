@@ -39,6 +39,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -50,10 +51,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     JSONArray arraytipoMaqcompania = null;
     ArrayList<String> arrayBancosEstado;
     BottomNavigationView buttom_nav_option;
+    boolean estadoPut, dinheiroPut, papelPut;
+    int markerPut, markerEstadoPut;
     String maquina_m_estado;
     TextView titulo, distancia_rodape, subtitle;
     CheckBox papel, dinheiro, estado;
     Button submit;
+    int markerId = -1; //quando n vem markerId da lista de bancos
+    boolean vimDoBancos = false, vimDoEstadoMarker = false;
+
 
     public static double distance(LatLng latLng1, LatLng latLng2) {
         double earthRadius = 6371; // km
@@ -73,6 +79,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null){
+            if(extras.containsKey("id")) {
+                vimDoBancos = true;
+                Log.d("MapsActivity: ", "Vim do Bancos");
+                markerId = extras.getInt("id");
+                Log.d("Recebi um id da lista: ", String.valueOf(markerId));
+            }
+            else if(extras.containsKey("estado")){
+                vimDoEstadoMarker = true;
+                Log.d("MapsActivity: ", "Vim do EstadoMarkerActivity");
+                estadoPut = extras.getBoolean("estado");
+                papelPut = extras.getBoolean("papel");
+                dinheiroPut = extras.getBoolean("dinheiro");
+                markerPut = extras.getInt("id_mac");
+                markerEstadoPut = extras.getInt("id_estado");
+            }
+        }
 
         //receber dados dos bancos
         info task = new info();
@@ -107,7 +132,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             e.printStackTrace();
         }
 
-
         //binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(R.layout.activity_maps);
 
@@ -131,7 +155,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 minhaLatLng = new LatLng(latitude, longitude);
 
                 //TODO: Para dar fake // RETIRAR DEPOIS
-                minhaLatLng = new LatLng(38.4229, -9.911);
+                minhaLatLng = new LatLng(38.707573, -9.152852);
                 Log.d("minhaLatLng: ", minhaLatLng.toString());
             }
         } else {
@@ -244,6 +268,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         mMarkerArray = saveMarkers();
 
+        //TODO: remover depois do update funcionar
+        if(vimDoEstadoMarker){
+            for(int i = 0 ; i < mMarkerArray.size() ; i++) {
+                if(markerPut-1 == i){
+                    if(markerEstadoPut == 1)
+                        mMarkerArray.get(i).snippet("Ligado, Sem Papel, Sem Dinheiro");
+
+                    if(markerEstadoPut == 2)
+                        mMarkerArray.get(i).snippet("Ligado, Sem Papel, Com Dinheiro");
+
+                    if(markerEstadoPut == 3)
+                        mMarkerArray.get(i).snippet("Ligado, Com Papel, Com Dinheiro");
+
+                    if(markerEstadoPut == 4)
+                        mMarkerArray.get(i).snippet("Desligado");
+
+                    if(markerEstadoPut == 5)
+                        mMarkerArray.get(i).snippet("Ligado, Com Papel, Sem Dinheiro");
+
+                }
+            }
+        }
+
 
         for(int i = 0 ; i < mMarkerArray.size() ; i++) {
             Marker m = mMap.addMarker(mMarkerArray.get(i));
@@ -252,6 +299,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         if(!mMarkerArray.isEmpty())
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mMarkerArray.get(0).getPosition(), 19));
+
+        if(markerId != -1){
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mMarkerArray.get(markerId).getPosition(), 19));
+
+        }
 
 
         /*mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -278,14 +330,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 submit = v.findViewById(R.id.submit);
                 distancia_rodape = v.findViewById(R.id.distanciaRodape);
 
+                if(marker.getSnippet().toLowerCase(Locale.ROOT).startsWith("ligado")){
+                    estado.setChecked(true);
+                }
+                if(marker.getSnippet().toLowerCase(Locale.ROOT).contains("com papel")){
+                    papel.setChecked(true);
+                }
+                if(marker.getSnippet().toLowerCase(Locale.ROOT).contains("com dinheiro")){
+                    dinheiro.setChecked(true);
+                }
+
                 titulo.setText(marker.getTitle());
                 subtitle.setText(marker.getSnippet());
 
-                if((distance(minhaLatLng, marker.getPosition())*1000) <= 10){
+                Log.d("distancia: ", "estou a " + (distance(minhaLatLng, marker.getPosition())*1000) + "m deste marker");
+                if((distance(minhaLatLng, marker.getPosition())*1000) <= 40){
+                    submit.setVisibility(View.VISIBLE);
                     submit.setEnabled(true);
                     distancia_rodape.setVisibility(View.GONE);
+                    Intent i = new Intent(getApplicationContext(), EstadoMarkerActivity.class);
+                    i.putExtra("estado", estado.isChecked());
+                    i.putExtra("papel", papel.isChecked());
+                    i.putExtra("dinheiro", dinheiro.isChecked());
+                    i.putExtra("titulo", marker.getTitle());
+                    i.putExtra("subtitulo", marker.getSnippet());
+                    startActivity(i);
                 }
                 else{
+                    submit.setVisibility(View.INVISIBLE);
                     submit.setEnabled(false);
                     distancia_rodape.setVisibility(View.VISIBLE);
                 }
@@ -302,20 +374,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         }
                     }
                 });
-
-
-                //TODO: fazer este json para enviar num POST //"{"id": "4","id_estado":"2"}
-                try {
-                    JSONObject jsonObject = new JSONObject();
-                    jsonObject.put("id", marker.getTag());
-                    //ifs com estado da checkbox (estado.ischecked())
-                    //jsonObject.put("id_estado": )
-
-                    //enviar o jsonobject no post
-                    Log.d("jsonObject a enviar: ", jsonObject.toString());
-                }catch (JSONException jsonE){
-                    Log.e("Erro at object 4 post: ", jsonE.toString());
-                }
 
                 papel.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
