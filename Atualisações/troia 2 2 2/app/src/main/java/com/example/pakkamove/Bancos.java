@@ -59,9 +59,9 @@ public class Bancos extends AppCompatActivity {
                 // contruir uma nova string para adicionar na lista
                 StringBuilder newString = new StringBuilder();
                 // colocar nome na string
-                newString.append(jsonObject.getString("tipo_mac_nome"));
+                //newString.append(jsonObject.getString("tipo_mac_nome"));
                 // colocar o separador
-                newString.append(" - ");
+                //newString.append(" - ");
                 // colocar o direcionamento
                 newString.append(jsonObject.getString("tipo_mac_direcion"));
                 // adicionar a string na lista
@@ -147,11 +147,11 @@ public class Bancos extends AppCompatActivity {
                     startActivity(toFriends);
                     overridePendingTransition(0,0);
                     return true;
-                //case R.id.levantar_menu:
-                // Intent toMaps = new Intent(getApplicationContext(), GroupChatActivity.class/MapsActivity.class/);
-                //startActivity(toMaps);
-                //overridePendingTransition(0,0);
-                //return true;
+                case R.id.levantar_menu:
+                    Intent levanta = new Intent(getApplicationContext(), Levantar.class);
+                    startActivity(levanta);
+                    overridePendingTransition(0,0);
+                    return true;
 
                 case R.id.inicio_menu:
                     Intent mapa  = new Intent(getApplicationContext(), MapsActivity.class);

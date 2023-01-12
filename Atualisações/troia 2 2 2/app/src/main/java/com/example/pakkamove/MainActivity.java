@@ -1,11 +1,16 @@
  package com.example.pakkamove;
 
+import static com.example.pakkamove.Constants.API_M_ESTADO;
+import static com.example.pakkamove.Constants.HTTPS;
+import static com.example.pakkamove.Constants.IP_LOCAL;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,14 +30,33 @@ import java.util.concurrent.ExecutionException;
 
  public class MainActivity extends AppCompatActivity {
 
+     JSONArray arrayusers = null;
+     private ListView us;
+     ArrayList<String>Listus;
+     // Listview Adapter que irá proceder à conversão entre o array de strings e a lista
+     ArrayAdapter<String> adapter;
+
 
      @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_login);
 
+         Listus = new ArrayList<>();
+         info task = new info();
+         try {
+             arrayusers = task.execute(HTTPS+IP_LOCAL+API_M_ESTADO).get();
+             Log.d("Osuarios_log: ", arrayusers.toString());
+         }catch (ExecutionException e) {
+             e.printStackTrace();
 
-       TextView btn=findViewById(R.id.textViewSign);
+         } catch (InterruptedException e) {
+             e.printStackTrace();
+
+         }
+
+
+         TextView btn=findViewById(R.id.textViewSign);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

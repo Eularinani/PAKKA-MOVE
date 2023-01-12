@@ -189,11 +189,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     startActivity(toFriends);
                     overridePendingTransition(0,0);
                     return true;
-                //case R.id.levantar_menu:
-                // Intent toMaps = new Intent(getApplicationContext(), GroupChatActivity.class/MapsActivity.class/);
-                //startActivity(toMaps);
-                //overridePendingTransition(0,0);
-                //return true;
+                case R.id.levantar_menu:
+                    Intent levanta = new Intent(getApplicationContext(), Levantar.class);
+                    startActivity(levanta);
+                    overridePendingTransition(0,0);
+                    return true;
 
                 case R.id.inicio_menu:
                     Intent mapa  = new Intent(getApplicationContext(), MapsActivity.class);

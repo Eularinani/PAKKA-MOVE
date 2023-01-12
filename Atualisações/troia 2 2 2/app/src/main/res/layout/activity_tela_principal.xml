@@ -14,13 +14,6 @@
         tools:ignore="MissingConstraints" />
 
     <!-- Codigo da barra de pesquisa -->
-    <EditText
-        android:id="@+id/searchEditText"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:hint="Search Multibancos..."
-        android:inputType="text"
-        tools:ignore="MissingConstraints" />
 
     <!-- Codigo Da List View -->
     <ListView
