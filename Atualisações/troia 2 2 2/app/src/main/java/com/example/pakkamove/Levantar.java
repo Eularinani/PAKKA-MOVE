@@ -62,9 +62,9 @@ public class Levantar extends AppCompatActivity {
                 // colocar nome na string
                 newString.append(jsonObject.getString("serv_tipo"));
                 // colocar o separador
-                newString.append(" - ");
+                //pakkanewString.append(" - ");
                 // colocar o direcionamento
-                newString.append(jsonObject.getString("tipo_mac_direcion"));
+               // newString.append(jsonObject.getString("tipo_mac_direcion"));
 
                 // adicionar a string na lista
                 arrayLevantar.add(newString.toString());
