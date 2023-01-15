@@ -3,12 +3,13 @@ package com.example.pakkamove;
 public class Constants {
 
     public static final String HTTPS = "http://";
-    public static final String IP_LOCAL = "192.168.1.2";
+    public static final String IP_LOCAL = "192.168.1.3";
     public static final String API_TIPOMAC = ":8080/api/tipomac/";
     public static final String API_M_ESTADO = ":8080/api/maquina/Mestados";
     public static final String API_PUT_ESTADO = ":8080/api/usm/atualizarestado";
     public static final String API_LEVANTAR = ":8080/api/servicos/tiposervi";
-    public static final String USER_API = ":8080/api/usuarios/login";
+    public static final String USER_API = ":8080/api/usuarios/";
+    public static final String USER_API_EMAIL = "{email}";
 
 
 }

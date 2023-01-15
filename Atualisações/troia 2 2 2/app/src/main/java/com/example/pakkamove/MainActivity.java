@@ -3,6 +3,7 @@
 import static com.example.pakkamove.Constants.API_M_ESTADO;
 import static com.example.pakkamove.Constants.HTTPS;
 import static com.example.pakkamove.Constants.IP_LOCAL;
+import static com.example.pakkamove.Constants.USER_API;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -32,6 +33,7 @@ import java.util.concurrent.ExecutionException;
 
      JSONArray arrayusers = null;
      private ListView us;
+     String email;
      ArrayList<String>Listus;
      // Listview Adapter que irá proceder à conversão entre o array de strings e a lista
      ArrayAdapter<String> adapter;
@@ -44,16 +46,7 @@ import java.util.concurrent.ExecutionException;
 
          Listus = new ArrayList<>();
          info task = new info();
-         try {
-             arrayusers = task.execute(HTTPS+IP_LOCAL+API_M_ESTADO).get();
-             Log.d("Osuarios_log: ", arrayusers.toString());
-         }catch (ExecutionException e) {
-             e.printStackTrace();
 
-         } catch (InterruptedException e) {
-             e.printStackTrace();
-
-         }
 
 
          TextView btn=findViewById(R.id.textViewSign);
@@ -72,22 +65,36 @@ import java.util.concurrent.ExecutionException;
         loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (username.getText().toString().equals("pakka") && password.getText().toString().equals("move")){
-                    //correct
-                    Toast.makeText(MainActivity.this,"LOGIN SUCCESSFUL",Toast.LENGTH_SHORT).show();
-                    //Intent intent = new Intent(MainActivity.this, SearchBarMapasMainActivity.class);
-                    Intent intent = new Intent(getApplicationContext(), tela_principal.class);
-                    startActivity(intent);
-            }else
-                   //incorrect
-                    Toast.makeText(MainActivity.this,"LOGIN FAILED",Toast.LENGTH_SHORT).show();
-        }
-        });
-    }
-
-    //registo
+                try {
+                    email = username.getText().toString();
+                    arrayusers = task.execute(HTTPS+IP_LOCAL+USER_API+email).get();
+                    Log.d("Osuarios_log: ", arrayusers.toString());
+                    JSONObject userObject = arrayusers.getJSONObject(0);
+                    String senha = userObject.getString("user_senha");
+                    String User_id = userObject.getString("user_id");
+                    Log.e("ERRO: on marker place: ", senha.toString());
+                    if(password.getText().toString().equals(senha)) {
 
 
- }
+                        Toast.makeText(MainActivity.this,"LOGIN SUCCESSFUL",Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(MainActivity.this, tela_principal.class);
+                        //Intent intent = new Intent(getApplicationContext(), tela_principal.class);
+                        startActivity(intent);
+                    } else {
+                        //incorrect
+                        Toast.makeText(MainActivity.this,"LOGIN FAILED",Toast.LENGTH_SHORT).show();
+                }
+                }catch (ExecutionException e) {
+                    e.printStackTrace();
 
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
 
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });}}
